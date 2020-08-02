@@ -1,4 +1,4 @@
-import pandas as pd
+    import pandas as pd
 import numpy as np
 class CV:
     '''
@@ -21,6 +21,9 @@ class CV:
 
 
     def get_seed(self):
+        '''
+        Returns the seed used to randomly sample the data 
+        '''
         return self._seed
 
     def split(self,n_splits=10):
