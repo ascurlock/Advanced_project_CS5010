@@ -2,7 +2,7 @@
 import numpy as np
 class CV:
     '''
-    A cross-validation core class function built from scratch
+    A cross-validation core class built from scratch
 
     input parameters: 
     :parameter - X, the entire set of data for the predictor variables, df
