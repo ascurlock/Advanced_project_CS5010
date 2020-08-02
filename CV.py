@@ -1,15 +1,5 @@
-
-# %%  Initializing K Fold - test code to understand
-from sklearn.model_selection import KFold
-kf = KFold()
-print(list(kf.split(X,Y))[0]) # to understand how KFold works
-x_np = X.to_numpy()
-y_np = Y.to_numpy()
-for train_index, test_index in kf.split(X,Y):
-    x_train, y_train = X.loc[train_index], Y.loc[train_index]
-    x_test, y_test = X.loc[test_index], Y.loc[test_index]
-# %% Remove all code before this and import this file separately in main ML doc
-# %%
+import pandas as pd
+import numpy as np
 class CV:
     '''
     A cross-validation core class function built from scratch
@@ -47,10 +37,10 @@ class CV:
             test_indices.append(test_index)
             train_indices.append(train_index)
         return train_indices, test_indices
-#%%
+
+
+
 if __name__ == "__main__":
-    import pandas as pd
-    import numpy as np
     #Reading Data - Start getting rid of this when submitting code
     df = pd.read_csv("mushrooms_fixed.csv")
     df.head() # Preview Data
@@ -77,26 +67,3 @@ if __name__ == "__main__":
     print(f"Length of each traning set (number of splits = 3):{len(cv.split(n_splits=3)[0][0])} ")
     print("Testing set")
     print(f"Length of each traning set (number of splits = 3):{len(cv.split(n_splits=3)[1][0])} ")
-
-
-
-# %%
-        # self.n = len(X)
-        # seed = np.random.randint(0, 1000000) # create random seed
-        # np.random.seed(seed) # set seed
-        # if shuffle:
-        #     self._xseed = seed
-        #     np.random.shuffle(X)
-        #     self.x = X
-        # else:
-        #     self._x = X
-        #     self._xseed = False
-        # seed = np.random.randint(0, 1000000) # create random seed
-        # np.random.seed(seed) # set seed
-        # if shuffle:
-        #     self._yseed = seed
-        #     np.random.shuffle(Y) 
-        #     self.y = Y
-        # else:
-        #     self._y = Y
-        #     self._yseed = False # False if no shuffling
