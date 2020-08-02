@@ -71,7 +71,7 @@ class CV:
     def get_yseed(self):
         return self._yseed
 
-    def split(self,n_splits=10):
+    def split(self,n_splits=2):
         '''
         Splits the X and Y data into a number of splits
         returns dataframes/lists equal to the number of splits for training and testing
@@ -87,12 +87,19 @@ class CV:
         return train_indices, test_indices
         
             
-        
+#%% Test Cell
+if __name__ == "__main__":
+    print("Testing splits")
+    X= [1,2,3,4,5,6,7,8,9,10,11,12]
+    Y = [1,2,3,4,5,6,7,8,9,10,11,12]
+    cv=CV(X,Y)
+    print("Training set")
+    print(cv.split(n_splits=3)[0])
+    print("Testing set")
+    print(cv.split(n_splits=3)[1])
 
 
-
-
-
+#%%
 
 '''
 kfold(training) ----> [[x_t,y_t,x,y] [] [] [] [] [] [] [] []]
