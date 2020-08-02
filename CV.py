@@ -1,27 +1,3 @@
-#%% Importing modules
-import pandas as pd
-import numpy as np
-#%% Reading Data - Start getting rid of this when submitting code
-df = pd.read_csv("mushrooms_fixed.csv")
-df.head() # Preview Data
-#%% Data Treatment - From Ashley's Code
-for i in list(df.columns):
-    print(i,"is",str(type(df[i][0]))) # print out 
-for i in list(df.columns):
-    print(i,"contains the values: \n",str(df[i].unique()))
-for i in list(df.columns):
-    print(i,"contains the values: \n",str(df[i].value_counts()))
-
-df = df[df['cap.shape'] != 'c']
-df = df[df['cap.surface'] != 'g']
-df = df[df['stalk.color.above.ring'] != 'y']
-df = df[df['veil.color'] != 'y']
-
-print("After cleaning. Rows =",str(len(df))) # 8111
-# %% Splitting df
-Y = df["class"]
-X_columns = [x for x in df.columns if x != "class"] 
-X = df[X_columns]
 
 # %%  Initializing K Fold - test code to understand
 from sklearn.model_selection import KFold
@@ -44,79 +20,83 @@ class CV:
     '''
     def __init__(self,X,Y,shuffle=True): # only require x and y for supervised learning
         if len(X) != len(Y):
-            raise Exception("X and Y must be same length")
+            raise Exception("X and Y must be same length")        
+        seed = np.random.randint(0,100000)
+        self._seed = seed
         self.n = len(X)
-        seed = np.random.randint(0, 1000000) # create random seed
-        np.random.seed(seed) # set seed
         if shuffle:
-            self._xseed = seed
-            np.random.shuffle(X)
-            self.x = X
-        else:
-            self._x = X
-            self._xseed = False
-        seed = np.random.randint(0, 1000000) # create random seed
-        np.random.seed(seed) # set seed
-        if shuffle:
-            self._yseed = seed
-            np.random.shuffle(Y) 
-            self.y = Y
-        else:
-            self._y = Y
-            self._yseed = False # False if no shuffling
+            x = X.sample(frac=1,random_state=seed)
+            y = Y.sample(frac=1,random_state=seed)
+        self.x,self.y = (x.reset_index(drop=True),y.reset_index(drop=True))
 
-    def get_xseed(self):
-        return self._xseed
-    
-    def get_yseed(self):
-        return self._yseed
 
-    def split(self,n_splits=2):
+    def get_seed(self):
+        return self._seed
+
+    def split(self,n_splits=10):
         '''
         Splits the X and Y data into a number of splits
         returns dataframes/lists equal to the number of splits for training and testing
         '''
         test_indices = []
         train_indices = []
-        split_size = int(self.n/n_splits)
+        self.split_size = int(self.n/n_splits)
         for n in range(0,n_splits):
-            test_index = list(range(n*split_size,(n+1)*split_size)) # quik mafs
+            test_index = list(range(n*self.split_size,(n+1)*self.split_size)) # quik mafs
             train_index = [num for num in range(0,self.n) if num not in test_index]
             test_indices.append(test_index)
             train_indices.append(train_index)
         return train_indices, test_indices
-        
-            
-#%% Test Cell
-if __name__ == "__main__":
-    print("Testing splits")
-    X= [1,2,3,4,5,6,7,8,9,10,11,12]
-    Y = [1,2,3,4,5,6,7,8,9,10,11,12]
-    cv=CV(X,Y)
-    print("Training set")
-    print(cv.split(n_splits=3)[0])
-    print("Testing set")
-    print(cv.split(n_splits=3)[1])
-
-
 #%%
+if __name__ == "__main__":
+    import pandas as pd
+    import numpy as np
+    #Reading Data - Start getting rid of this when submitting code
+    df = pd.read_csv("mushrooms_fixed.csv")
+    df.head() # Preview Data
+    #Data Treatment - From Ashley's Code
+    for i in list(df.columns):
+        print(i,"is",str(type(df[i][0]))) # print out 
+    for i in list(df.columns):
+        print(i,"contains the values: \n",str(df[i].unique()))
+    for i in list(df.columns):
+        print(i,"contains the values: \n",str(df[i].value_counts()))
 
-'''
-kfold(training) ----> [[x_t,y_t,x,y] [] [] [] [] [] [] [] []]
+    df = df[df['cap.shape'] != 'c']
+    df = df[df['cap.surface'] != 'g']
+    df = df[df['stalk.color.above.ring'] != 'y']
+    df = df[df['veil.color'] != 'y']
+    df.reset_index(drop=True,inplace=True)
+    print("After cleaning. Rows =",str(len(df))) # 8111
+    # Splitting df
+    Y = df["class"]
+    X_columns = [x for x in df.columns if x != "class"] 
+    X = df[X_columns]
+    cv=CV(X,Y)
+    print("Training sets")
+    print(f"Length of each traning set (number of splits = 3):{len(cv.split(n_splits=3)[0][0])} ")
+    print("Testing set")
+    print(f"Length of each traning set (number of splits = 3):{len(cv.split(n_splits=3)[1][0])} ")
 
-# FOR ONE FOLD
-x_train 
-y_train
-x_test
-y_test
-rndfr = RandomForest(x,y)
-rndfr.predict(x_test) --> y_predict
-y_test # true value
-r2_list = r2_score(y_predict,y_test)
 
-# Calculate how well our model did on all the folds
-r2_avg = sum(r2_list)/len(r2_list)
-
-'''
 
 # %%
+        # self.n = len(X)
+        # seed = np.random.randint(0, 1000000) # create random seed
+        # np.random.seed(seed) # set seed
+        # if shuffle:
+        #     self._xseed = seed
+        #     np.random.shuffle(X)
+        #     self.x = X
+        # else:
+        #     self._x = X
+        #     self._xseed = False
+        # seed = np.random.randint(0, 1000000) # create random seed
+        # np.random.seed(seed) # set seed
+        # if shuffle:
+        #     self._yseed = seed
+        #     np.random.shuffle(Y) 
+        #     self.y = Y
+        # else:
+        #     self._y = Y
+        #     self._yseed = False # False if no shuffling
