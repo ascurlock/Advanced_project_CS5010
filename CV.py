@@ -30,7 +30,7 @@ class CV:
     def split(self,n_splits=10):
         '''
         Splits the X and Y data into a number of splits
-        returns dataframes/lists equal to the number of splits for training and testing
+        returns a list of training and testing indices for each split
         '''
         test_indices = []
         train_indices = []

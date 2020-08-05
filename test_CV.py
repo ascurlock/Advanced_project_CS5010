@@ -90,7 +90,7 @@ class CV_TestCases(unittest.TestCase):
 
     def test_seed_shuffle(self):
         '''
-        Tests to see whether inputting a seed produces reproducible X and Y dataframes.
+        Tests to see whether inputting a seed creates reproducible X and Y dataframes.
         '''
         X=pd.DataFrame([1,2,3,4,5,6])
         Y=pd.DataFrame([1,2,3,4,4,5])
