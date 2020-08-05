@@ -8,8 +8,8 @@ class CV_TestCases(unittest.TestCase):
         X = [1,2,3,4,5]
         Y = [1,2,3,4,5]
         kfold = CV(X,Y)
-        self.assertEqual(kfold._x,X)
-        self.assertEqual(kfold._y,Y)
+        self.assertEqual(kfold.x,X)
+        self.assertEqual(kfold.y,Y)
     def test_CV_split_length(self):
         X=[1,2,3,4,5,6]
         Y=[1,2,3,4,4,5]
