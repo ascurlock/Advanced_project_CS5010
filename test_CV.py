@@ -4,11 +4,13 @@ import unittest
 import pandas as pd
 
 class CV_TestCases(unittest.TestCase):
-    #testing the class CV
-
+    '''
+    Class to test the CV class for n-fold cross-validation
+    '''
     def test_CV_init(self):
-        # Create test dataframes and create object
-        # check that it is not None
+        '''
+        Tests the constructor for the CV class to see whether the CV object, X, and Y dataframes are instanciated
+        '''
         X=pd.DataFrame([1,2,3,4,5,6])
         Y=pd.DataFrame([1,2,3,4,4,5])
         kfold = CV(X,Y)
@@ -17,7 +19,9 @@ class CV_TestCases(unittest.TestCase):
         self.assertIsInstance(kfold.x, pd.DataFrame)
 
     def test_CV_split(self):
-        # Create test dataframes
+        '''
+        Tests the split method to see whether the splits are of the right shape and length
+        '''
         X=pd.DataFrame([1,2,3,4,5,6])
         Y=pd.DataFrame([1,2,3,4,4,5])
         n_splits = 3 
@@ -27,19 +31,28 @@ class CV_TestCases(unittest.TestCase):
         self.assertEqual(len(kfold.split(n_splits=n_splits)[0]), 3)
         self.assertEqual(len(kfold.split(n_splits=n_splits)[1]), 3)
 
-    def test_init_shuffle_x(self):
+    def test_init_shuffle_x(self):  
+        '''
+        Tests to see whether the x and y dataframes are shuffled properly in the constructor
+        '''
         X=pd.DataFrame([1,2,3,4,5,6])
         Y=pd.DataFrame([1,2,3,4,4,5])
         kfold=CV(X,Y)
         self.assertFalse(kfold.x.equals(X))
 
     def test_init_shuffle_y(self):
+        '''
+        Tests to see whether the class returns the x and y dataframes properly
+        '''
         X=pd.DataFrame([1,2,3,4,5,6])
         Y=pd.DataFrame([1,2,3,4,4,5])
         kfold=CV(X,Y)
         self.assertFalse(kfold.y.equals(Y))
 
     def test_shuffle_method_x(self):
+        '''
+        Tests to see whether the shuffle method works right for the feature dataframe
+        '''
         X=pd.DataFrame([1,2,3,4,5,6])
         Y=pd.DataFrame([1,2,3,4,4,5])
         kfold=CV(X,Y)
@@ -47,6 +60,9 @@ class CV_TestCases(unittest.TestCase):
         self.assertFalse(x_shuff.equals(X))
 
     def test_shuffle_method_y(self):
+        '''
+        Tests to see whether the shuffle method works right for the label dataframe
+        '''
         X=pd.DataFrame([1,2,3,4,5,6])
         Y=pd.DataFrame([1,2,3,4,4,5])
         kfold=CV(X,Y)
@@ -54,12 +70,18 @@ class CV_TestCases(unittest.TestCase):
         self.assertFalse(y_shuff.equals(Y))
 
     def test_get_seed_exists(self):
+        '''
+        Tests to see whether the get_seed() method properly returns a seed given no input seed
+        '''
         X=pd.DataFrame([1,2,3,4,5,6])
         Y=pd.DataFrame([1,2,3,4,4,5])
         kfold=CV(X,Y,seed=None)
         self.assertTrue(kfold.get_seed())
 
     def test_get_seed_returns_correct(self):
+        '''
+        Tests to see whether the get_seed() method properly returns a seed given an input seed
+        '''
         X=pd.DataFrame([1,2,3,4,5,6])
         Y=pd.DataFrame([1,2,3,4,4,5])
         seed = 42
@@ -67,6 +89,9 @@ class CV_TestCases(unittest.TestCase):
         self.assertEqual(seed,kfold.get_seed())
 
     def test_seed_shuffle(self):
+        '''
+        Tests to see whether inputting a seed produces reproducible X and Y dataframes.
+        '''
         X=pd.DataFrame([1,2,3,4,5,6])
         Y=pd.DataFrame([1,2,3,4,4,5])
         seed = 42
