@@ -42,8 +42,27 @@ class CV_TestCases(unittest.TestCase):
         kfold=CV(X,Y)
         _ , y_shuff = kfold.shuffle()
         self.assertFalse(y_shuff.equals(Y))
-
-
+    def test_get_seed_exists(self):
+        X=pd.DataFrame([1,2,3,4,5,6])
+        Y=pd.DataFrame([1,2,3,4,4,5])
+        kfold=CV(X,Y,seed=None)
+        self.assertTrue(kfold.get_seed())
+    def test_get_seed_returns_correct(self):
+        X=pd.DataFrame([1,2,3,4,5,6])
+        Y=pd.DataFrame([1,2,3,4,4,5])
+        seed = 42
+        kfold=CV(X,Y,seed=42)
+        self.assertEqual(seed,kfold.get_seed())
+    def test_seed_shuffle(self):
+        X=pd.DataFrame([1,2,3,4,5,6])
+        Y=pd.DataFrame([1,2,3,4,4,5])
+        seed = 42
+        kfold=CV(X,Y,seed=42)
+        x = X.sample(frac=1,random_state=seed)
+        x.reset_index(drop=True,inplace=True)
+        y = Y.sample(frac=1,random_state=seed)
+        y.reset_index(drop=True,inplace=True)
+        self.assertTrue(x.equals(kfold.shuffle()[0]))
 if __name__ == "__main__":
     unittest.main()
 

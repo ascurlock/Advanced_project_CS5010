@@ -8,10 +8,11 @@ class CV:
     :parameter - X, the entire set of data for the predictor variables, df
     :parameter - Y, the entire set of data for the response variables, df
     '''
-    def __init__(self,X,Y,shuffle=True): # only require x and y for supervised learning
+    def __init__(self,X,Y,shuffle=True,seed=None): # only require x and y for supervised learning
         if len(X) != len(Y):
-            raise Exception("X and Y must be same length")        
-        seed = np.random.randint(0,100000)
+            raise Exception("X and Y must be same length")  
+        if seed == None:      
+            seed = np.random.randint(0,100000)
         self._seed = seed
         self.n = len(X)
         if shuffle:
